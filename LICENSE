@@ -1,0 +1,75 @@
+PROPRIETARY SOFTWARE LICENSE — GEDEON
+
+Version 1.0 — October 16, 2026
+
+IMPORTANT — COMPLETE THIS DOCUMENT BEFORE ANY CONTRACTUAL USE
+
+Rights holder: [LEGAL COMPANY NAME]
+Trade name: Gedeon
+Address: [COMPLETE LEGAL ADDRESS]
+Legal contact: [EMAIL ADDRESS OR CONTACT]
+Governing law and competent courts: [COUNTRY / JURISDICTION]
+
+## 1. Purpose and definitions
+
+This proprietary license (the “License”) applies to the source code, object code, schemas, data models, interfaces, documentation, text, graphics, configurations, scripts, and other original materials of the Gedeon platform contained in or delivered with this repository (collectively, the “Software”). It also applies to versions, patches, and adaptations created for the Rights Holder, subject to the third-party rights described in Section 8.
+
+The “Rights Holder” is the legal entity identified above. An “Authorized Person” is an officer, employee, or contractor to whom the Rights Holder has granted individual access, solely to the extent necessary to perform work on its behalf and under its instructions.
+
+## 2. Intellectual property and reservation of rights
+
+The Software is proprietary and confidential. Subject to third-party rights and rights that cannot be assigned or restricted under applicable law, the Rights Holder retains all economic rights it holds in the Software. No rights are transferred by delivery of a copy, access to a repository, use of the service, or this License, except for the express authorization in Section 3. All rights not expressly authorized are reserved.
+
+This License does not, by itself, assign rights belonging to an author or a third party. Any required assignment or authorization must be obtained separately in a written instrument that complies with applicable law.
+
+## 3. Internal-use authorization
+
+The Rights Holder may use, run, host, reproduce, study, test, adapt, modify, correct, maintain, integrate, and deploy the Software for its business, products, and services. It may create derivative versions and decide how to exploit them, subject to third-party rights.
+
+The Rights Holder may authorize its Authorized Persons to access the Software and perform these acts on its behalf. This authorization is limited to their duties, personal, non-transferable, and does not grant independent exploitation rights. The Rights Holder must limit access to people who need it and take reasonable measures to protect the Software and its access credentials.
+
+## 4. Restrictions applicable to Authorized Persons
+
+Unless the Rights Holder gives written permission or mandatory law provides otherwise, no Authorized Person may, for their own benefit or for a third party:
+
+- publish, sell, rent, lend, distribute, sublicense, or make the Software or a copy available;
+- reuse or exploit the Software outside their work for the Rights Holder;
+- remove or alter proprietary, confidentiality, or license notices;
+- circumvent access or security controls, or attempt to access environments or data without authorization;
+- reverse engineer, decompile, or disassemble the Software, except to the extent such restriction is prohibited by applicable law.
+
+These restrictions do not limit rights that applicable law makes inalienable or mandatory.
+
+## 5. Customer access and service delivery
+
+This License grants no rights to customers or end users in the Software's source code, repositories, or internal components. If the Rights Holder makes a Gedeon application or service available to them, their access and use are governed by the separately presented terms of service, contracts, or licenses. Access to a service alone grants no right to copy, modify, extract, or redistribute the Software.
+
+## 6. Contributions
+
+A contribution by an employee or contractor belongs to the Rights Holder only to the extent provided by applicable law and relevant written agreements. Contributors must follow the Rights Holder's procedures for contributions and third-party components. This License does not replace an employment, confidentiality, rights-assignment, or contribution agreement.
+
+## 7. Trademarks and distinctive signs
+
+This License grants no rights in the Rights Holder's Gedeon names, logos, trademarks, domain names, or other distinctive signs.
+
+## 8. Third-party components
+
+Third-party libraries, software, fonts, content, and other materials are excluded from this License and remain governed by their own licenses. In the event of a conflict, the terms applicable to a third-party component prevail for that component. Notices required by those licenses must be retained and observed.
+
+## 9. Term, termination of authorization, and return
+
+An Authorized Person's authorization ends when their assignment or authorized access ends, or when the Rights Holder revokes it. At the Rights Holder's request, that person must then stop using the Software and return or delete copies and media in their possession, except where retention is required by law or applicable internal retention rules.
+
+Ending an individual authorization transfers no rights and does not end confidentiality obligations that continue to apply under the relevant agreement and applicable law.
+
+## 10. Disclaimer of warranties and liability
+
+To the extent permitted by applicable law, the Software is provided “as is” and “as available,” without implied warranties of merchantability, fitness for a particular purpose, or error-free operation. Nothing in this License excludes a warranty or liability that cannot legally be excluded or limited.
+
+## 11. General provisions
+
+This License creates no partnership, agency, employment, or fiduciary relationship. If a provision is held unenforceable, the remaining provisions remain in effect to the extent permitted by law. Any amendment or waiver must be in writing and approved by the Rights Holder. This License does not replace applicable employment, services, confidentiality, rights-assignment, or terms-of-service agreements.
+
+The governing law and competent courts are those specified in the fields to be completed at the beginning of this document, subject to applicable mandatory rules.
+
+For permission requests or questions about this License, contact the Rights Holder using the legal contact listed above.

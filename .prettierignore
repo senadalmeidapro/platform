@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+public/
+.git/
+.idea/
+package-lock.json
+*.tsbuildinfo
+.env*
+*.log
