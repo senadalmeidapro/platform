@@ -1,21 +1,13 @@
-import {
-  ArrowRight,
-  ArrowUpRight,
-  BadgeCheck,
-  BriefcaseBusiness,
-  ChevronRight,
-  MoveRight,
-  ShieldCheck,
-  Sparkles,
-} from 'lucide-react';
+import { ArrowRight, BadgeCheck, BriefcaseBusiness, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import { industries, productCategories, services, workSteps } from '../data/catalog';
 import { CTASection } from '../components/CTASection';
+import { ServiceCard } from '../components/ContentSections';
 import { ImageFrame } from '../components/ImageFrame';
 import { PageMeta } from '../components/PageMeta';
 import { SectionHeading } from '../components/SectionHeading';
-import { ServiceCard } from '../components/ContentSections';
+import { ServiceIcon } from '../components/ServiceIcon';
+import { t } from '../content';
+import { industries, productCategories, services, workSteps } from '../data/catalog';
 
 const strengths = [
   {
@@ -35,94 +27,88 @@ const strengths = [
   },
 ];
 
-export function HomePage() {
-  const { t } = useTranslation();
+const capabilityGroups = ['systems', 'networking', 'security', 'office'] as const;
 
+export function HomePage() {
   return (
     <>
       <PageMeta title="meta.home.title" description="meta.home.description" />
-      <section className="home-hero">
-        <div className="home-hero__grid" />
-        <div className="container home-hero__layout">
-          <div className="home-hero__content">
-            <p className="hero-kicker">
-              <span />
+
+      <section className="hero">
+        <div className="container hero__layout">
+          <div className="hero__copy">
+            <span className="badge">
+              <span className="badge__dot" />
               {t('home.hero.kicker')}
-            </p>
+            </span>
             <h1>{t('home.hero.title')}</h1>
-            <p className="home-hero__lead">{t('home.hero.description')}</p>
-            <div className="home-hero__actions">
-              <Link className="button button--primary button--large" to="/request-quote">
-                {t('nav.requestQuote')}
-                <ArrowUpRight aria-hidden="true" size={18} />
+            <p className="lead">{t('home.hero.description')}</p>
+            <div className="hero__actions">
+              <Link className="btn btn--primary btn--lg" to="/request-quote">
+                {t('nav.requestQuote')} <ArrowRight aria-hidden="true" size={18} />
               </Link>
-              <Link className="button button--outline button--large" to="/services">
+              <Link className="btn btn--secondary btn--lg" to="/services">
                 {t('home.hero.secondary')}
-                <ArrowRight aria-hidden="true" size={17} />
               </Link>
             </div>
-            <div className="home-hero__promise">
-              <ShieldCheck aria-hidden="true" size={17} />
-              <span>{t('home.hero.promise')}</span>
-            </div>
+            <p className="hero__assurance">
+              <ShieldCheck aria-hidden="true" size={18} />
+              {t('home.hero.promise')}
+            </p>
           </div>
-          <div className="home-hero__visual">
+          <div className="hero__visual">
             <ImageFrame
               alt={t('home.hero.imageAlt')}
-              className="home-hero__photo"
-              imageClassName="home-hero__photo-image"
+              className="hero__frame"
               priority
               src={services[0]!.image}
             />
-            <div aria-hidden="true" className="home-hero__photo-shade" />
-            <div className="hero-caption">
-              <span className="hero-caption__dot" />
-              <span>{t('home.hero.imageCaption')}</span>
-            </div>
-            <div className="hero-side-note">
-              <span>{t('home.hero.sideNoteTop')}</span>
-              <strong>{t('home.hero.sideNoteBottom')}</strong>
-            </div>
-            <div className="hero-stamp">
-              <Sparkles aria-hidden="true" size={18} />
-              <span>{t('home.hero.stamp')}</span>
-            </div>
+            <aside aria-label={t('home.hero.panelTitle')} className="hero__panel">
+              <p className="hero__panel-title">{t('home.hero.panelTitle')}</p>
+              {[services[2]!, services[3]!, services[4]!].map((service) => (
+                <div className="hero__panel-row" key={service.id}>
+                  <span className="icon-box">
+                    <ServiceIcon name={service.icon} />
+                  </span>
+                  {t(`services.items.${service.id}.title`)}
+                </div>
+              ))}
+            </aside>
           </div>
-        </div>
-        <div className="container home-hero__foot">
-          <span>{t('home.hero.footnote')}</span>
-          <span className="home-hero__foot-line" />
-          <span>{t('home.hero.footnoteRight')}</span>
         </div>
       </section>
 
-      <section className="section intro-section">
-        <div className="container intro-layout">
-          <div className="intro-visual">
-            <ImageFrame
-              alt={t('home.intro.imageAlt')}
-              className="intro-visual__image"
-              src={services[2]!.image}
-            />
-            <div className="intro-visual__label">
-              <span>01</span>
-              <p>{t('home.intro.imageNote')}</p>
-            </div>
-            <div className="intro-visual__line" />
-          </div>
-          <div className="intro-copy">
-            <p className="eyebrow">{t('home.intro.kicker')}</p>
-            <h2>{t('home.intro.title')}</h2>
-            <p className="intro-copy__lead">{t('home.intro.description')}</p>
-            <Link className="text-link" to="/about">
-              {t('home.intro.link')}
-              <MoveRight aria-hidden="true" size={18} />
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <SectionHeading title="home.services.title" description="home.services.description" />
+            <Link className="link" to="/services">
+              {t('home.services.link')} <ArrowRight aria-hidden="true" size={16} />
             </Link>
-            <div className="strength-list">
+          </div>
+          <div className="grid grid--3">
+            {services.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--soft">
+        <div className="container split">
+          <ImageFrame
+            alt={t('home.intro.imageAlt')}
+            className="detail-hero__frame"
+            src={services[2]!.image}
+          />
+          <div className="split__copy">
+            <h2>{t('home.intro.title')}</h2>
+            <p>{t('home.intro.description')}</p>
+            <div className="feature-list">
               {strengths.map(({ icon: Icon, title, body }) => (
-                <div className="strength-item" key={title}>
-                  <span>
-                    <Icon aria-hidden="true" size={19} />
+                <div className="feature" key={title}>
+                  <span className="icon-box">
+                    <Icon aria-hidden="true" size={20} />
                   </span>
                   <div>
                     <h3>{t(title)}</h3>
@@ -131,54 +117,33 @@ export function HomePage() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section services-section">
-        <div className="container">
-          <div className="section-heading-row">
-            <SectionHeading
-              kicker="home.services.kicker"
-              title="home.services.title"
-              description="home.services.description"
-            />
-            <Link className="text-link text-link--light section-heading-row__link" to="/services">
-              {t('home.services.link')}
-              <ArrowUpRight size={17} />
+            <Link className="link" to="/about">
+              {t('home.intro.link')} <ArrowRight aria-hidden="true" size={16} />
             </Link>
           </div>
-          <div className="services-showcase">
-            {services.map((service, index) => (
-              <ServiceCard
-                featured={index === 0 || index === 4}
-                index={index}
-                key={service.id}
-                service={service}
-              />
-            ))}
-          </div>
         </div>
       </section>
 
-      <section className="section capability-section">
+      <section className="section">
         <div className="container">
-          <SectionHeading
-            align="center"
-            kicker="home.capabilities.kicker"
-            title="home.capabilities.title"
-            description="home.capabilities.description"
-          />
-          <div className="capability-grid">
-            {(['systems', 'networking', 'security', 'office'] as const).map((group, index) => (
-              <article className={`capability-item capability-item--${group}`} key={group}>
-                <span className="capability-item__index">0{index + 1}</span>
+          <div className="section-head section-head--center">
+            <SectionHeading
+              align="center"
+              title="home.capabilities.title"
+              description="home.capabilities.description"
+            />
+          </div>
+          <div className="grid grid--4">
+            {capabilityGroups.map((group) => (
+              <article className="card capability" key={group}>
                 <h3>{t(`home.capabilities.groups.${group}.title`)}</h3>
                 <p>{t(`home.capabilities.groups.${group}.description`)}</p>
-                <span className="capability-item__rule" />
-                <ul>
+                <ul className="check-list">
                   {[0, 1, 2, 3].map((item) => (
-                    <li key={item}>{t(`home.capabilities.groups.${group}.items.${item}`)}</li>
+                    <li key={item}>
+                      <span aria-hidden="true">·</span>
+                      {t(`home.capabilities.groups.${group}.items.${item}`)}
+                    </li>
                   ))}
                 </ul>
               </article>
@@ -187,110 +152,66 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section products-preview">
+      <section className="section section--soft">
         <div className="container">
-          <div className="section-heading-row section-heading-row--products">
-            <SectionHeading
-              kicker="home.products.kicker"
-              title="home.products.title"
-              description="home.products.description"
-            />
-            <Link className="text-link" to="/products">
-              {t('home.products.link')}
-              <ArrowUpRight size={17} />
+          <div className="section-head">
+            <SectionHeading title="home.process.title" description="home.process.description" />
+          </div>
+          <ol className="steps" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+            {workSteps.map((step) => (
+              <li className="card step" key={step}>
+                <h3>{t(`home.process.steps.${step}.title`)}</h3>
+                <p>{t(`home.process.steps.${step}.description`)}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <SectionHeading title="home.products.title" description="home.products.description" />
+            <Link className="link" to="/products">
+              {t('home.products.link')} <ArrowRight aria-hidden="true" size={16} />
             </Link>
           </div>
-          <div className="category-strip">
-            {productCategories.slice(0, 6).map((category, index) => (
-              <Link
-                className={`category-tile category-tile--${index + 1}`}
-                key={category}
-                to={`/products?category=${category}`}
-              >
-                <span className="category-tile__index">{String(index + 1).padStart(2, '0')}</span>
-                <h3>{t(`products.categories.${category}`)}</h3>
-                <span className="category-tile__arrow">
-                  <ArrowUpRight aria-hidden="true" size={18} />
-                </span>
+          <div className="chips">
+            {productCategories.map((category) => (
+              <Link className="chip" key={category} to={`/products?category=${category}`}>
+                {t(`products.categories.${category}`)}
               </Link>
             ))}
           </div>
-          <p className="demo-note">
-            <span />
-            {t('products.demoNote')}
-          </p>
+          <p className="note">{t('products.demoNote')}</p>
         </div>
       </section>
 
-      <section className="section process-section">
-        <div className="container">
-          <div className="process-heading">
-            <SectionHeading
-              kicker="home.process.kicker"
-              title="home.process.title"
-              description="home.process.description"
-            />
-            <p className="process-heading__aside">{t('home.process.aside')}</p>
-          </div>
-          <div className="process-steps">
-            {workSteps.map((step, index) => (
-              <article className="process-step" key={step}>
-                <span className="process-step__number">{String(index + 1).padStart(2, '0')}</span>
-                <span aria-hidden="true" className="process-step__node">
-                  <span />
+      <section className="section section--soft">
+        <div className="container split split--top">
+          <div className="split__copy">
+            <h2>{t('home.industries.title')}</h2>
+            <p>{t('home.industries.description')}</p>
+            <div className="chips">
+              {industries.map((industry) => (
+                <span className="chip chip--static" key={industry}>
+                  {t(`home.industries.items.${industry}`)}
                 </span>
-                <h3>{t(`home.process.steps.${step}.title`)}</h3>
-                <p>{t(`home.process.steps.${step}.description`)}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section industries-section">
-        <div className="container industries-layout">
-          <div className="industries-intro">
-            <SectionHeading
-              kicker="home.industries.kicker"
-              title="home.industries.title"
-              description="home.industries.description"
-            />
-            <Link className="text-link" to="/contact">
-              {t('home.industries.link')}
-              <ArrowUpRight size={17} />
+              ))}
+            </div>
+            <Link className="link" to="/contact">
+              {t('home.industries.link')} <ArrowRight aria-hidden="true" size={16} />
             </Link>
           </div>
-          <div className="industries-list">
-            {industries.map((industry, index) => (
-              <div className="industry-row" key={industry}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <h3>{t(`home.industries.items.${industry}`)}</h3>
-                <ChevronRight aria-hidden="true" size={18} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section testimonial-section">
-        <div className="container testimonial-layout">
-          <div className="testimonial-intro">
-            <p className="eyebrow">{t('home.testimonial.kicker')}</p>
-            <h2>{t('home.testimonial.title')}</h2>
-            <p>{t('home.testimonial.description')}</p>
-          </div>
-          <figure className="testimonial-quote">
-            <span aria-hidden="true" className="quote-mark">
-              “
-            </span>
+          <figure className="card quote">
             <blockquote>{t('home.testimonial.demoQuote')}</blockquote>
             <figcaption>
-              <span className="testimonial-avatar">{t('home.testimonial.demoInitials')}</span>
+              <span className="quote__avatar">{t('home.testimonial.demoInitials')}</span>
               <span>
                 <strong>{t('home.testimonial.demoName')}</strong>
                 <small>{t('home.testimonial.demoRole')}</small>
               </span>
-              <em>{t('home.testimonial.demoLabel')}</em>
+              <em className="quote__tag">{t('home.testimonial.demoLabel')}</em>
             </figcaption>
           </figure>
         </div>

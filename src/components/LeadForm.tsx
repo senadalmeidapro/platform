@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import { t } from '../content';
 import { z } from 'zod';
-import { ArrowUpRight, LoaderCircle } from 'lucide-react';
+import { ArrowRight, LoaderCircle } from 'lucide-react';
 import { Link } from 'react-router';
 import { productCategories, services } from '../data/catalog';
 import { submitLead, type LeadPayload } from '../services/leadSubmission';
@@ -15,7 +15,6 @@ type LeadFormProps = {
 };
 
 export function LeadForm({ mode, initialProduct = '', initialService = '' }: LeadFormProps) {
-  const { t } = useTranslation();
   const [result, setResult] = useState<'idle' | 'sent' | 'not-configured' | 'failed'>('idle');
   const schema = useMemo(
     () =>
@@ -41,7 +40,7 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
             : z.string().optional(),
         consent: z.boolean().refine(Boolean, t('forms.validation.consent')),
       }),
-    [mode, t],
+    [mode],
   );
 
   type FormValues = z.infer<typeof schema>;
@@ -84,12 +83,12 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
 
   const errorFor = (field: keyof FormValues) => form.formState.errors[field]?.message;
   const inputClass = (field: keyof FormValues) =>
-    `form-control ${errorFor(field) ? 'form-control--error' : ''}`;
+    `control ${errorFor(field) ? 'control--error' : ''}`;
 
   return (
     <form className="lead-form" noValidate onSubmit={form.handleSubmit(onSubmit)}>
       <div className="form-grid">
-        <label className="form-field">
+        <label className="field">
           <span>
             {t('forms.fullName')} <b>*</b>
           </span>
@@ -98,10 +97,10 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
             className={inputClass('fullName')}
             {...form.register('fullName')}
           />
-          {errorFor('fullName') && <small className="form-error">{errorFor('fullName')}</small>}
+          {errorFor('fullName') && <small className="field-error">{errorFor('fullName')}</small>}
         </label>
         {mode === 'quote' && (
-          <label className="form-field">
+          <label className="field">
             <span>{t('forms.companyName')}</span>
             <input
               autoComplete="organization"
@@ -110,7 +109,7 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
             />
           </label>
         )}
-        <label className="form-field">
+        <label className="field">
           <span>
             {t('forms.email')} <b>*</b>
           </span>
@@ -120,9 +119,9 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
             type="email"
             {...form.register('email')}
           />
-          {errorFor('email') && <small className="form-error">{errorFor('email')}</small>}
+          {errorFor('email') && <small className="field-error">{errorFor('email')}</small>}
         </label>
-        <label className="form-field">
+        <label className="field">
           <span>
             {t('forms.phone')} <b>*</b>
           </span>
@@ -132,10 +131,10 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
             type="tel"
             {...form.register('phone')}
           />
-          {errorFor('phone') && <small className="form-error">{errorFor('phone')}</small>}
+          {errorFor('phone') && <small className="field-error">{errorFor('phone')}</small>}
         </label>
         {mode === 'quote' && (
-          <label className="form-field">
+          <label className="field">
             <span>
               {t('forms.customerType')} <b>*</b>
             </span>
@@ -148,11 +147,11 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
               ))}
             </select>
             {errorFor('customerType') && (
-              <small className="form-error">{errorFor('customerType')}</small>
+              <small className="field-error">{errorFor('customerType')}</small>
             )}
           </label>
         )}
-        <label className="form-field">
+        <label className="field">
           <span>
             {t('forms.service')} <b>*</b>
           </span>
@@ -164,19 +163,19 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
               </option>
             ))}
           </select>
-          {errorFor('service') && <small className="form-error">{errorFor('service')}</small>}
+          {errorFor('service') && <small className="field-error">{errorFor('service')}</small>}
         </label>
         {mode === 'contact' && (
-          <label className="form-field">
+          <label className="field">
             <span>
               {t('forms.subject')} <b>*</b>
             </span>
             <input className={inputClass('subject')} {...form.register('subject')} />
-            {errorFor('subject') && <small className="form-error">{errorFor('subject')}</small>}
+            {errorFor('subject') && <small className="field-error">{errorFor('subject')}</small>}
           </label>
         )}
         {mode === 'quote' && (
-          <label className="form-field">
+          <label className="field">
             <span>{t('forms.equipment')}</span>
             <select className={inputClass('equipment')} {...form.register('equipment')}>
               <option value="">{t('forms.selectCategory')}</option>
@@ -190,7 +189,7 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
           </label>
         )}
         {mode === 'quote' && (
-          <label className="form-field">
+          <label className="field">
             <span>
               {t('forms.preferredContact')} <b>*</b>
             </span>
@@ -204,33 +203,33 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
             </select>
           </label>
         )}
-        <label className="form-field form-field--wide">
+        <label className="field field--wide">
           <span>
             {t('forms.message')} <b>*</b>
           </span>
           <textarea className={inputClass('message')} rows={5} {...form.register('message')} />
-          {errorFor('message') && <small className="form-error">{errorFor('message')}</small>}
+          {errorFor('message') && <small className="field-error">{errorFor('message')}</small>}
         </label>
-        <label className="form-consent form-field--wide">
+        <label className="consent field--wide">
           <input type="checkbox" {...form.register('consent')} />
           <span>
             {t('forms.consent')} <Link to="/privacy-policy">{t('footer.privacy')}</Link>.
           </span>
         </label>
         {errorFor('consent') && (
-          <small className="form-error form-field--wide">{errorFor('consent')}</small>
+          <small className="field-error field--wide">{errorFor('consent')}</small>
         )}
       </div>
 
-      <div aria-live="polite" className="form-feedback">
-        {result === 'sent' && <p className="form-feedback--success">{t('forms.submitted')}</p>}
+      <div aria-live="polite" className="feedback">
+        {result === 'sent' && <p className="feedback--success">{t('forms.submitted')}</p>}
         {result === 'not-configured' && (
-          <p className="form-feedback--notice">{t('forms.notConnected')}</p>
+          <p className="feedback--notice">{t('forms.notConnected')}</p>
         )}
-        {result === 'failed' && <p className="form-feedback--error">{t('forms.failed')}</p>}
+        {result === 'failed' && <p className="feedback--error">{t('forms.failed')}</p>}
       </div>
       <button
-        className="button button--primary form-submit"
+        className="btn btn--primary btn--lg form-submit"
         disabled={form.formState.isSubmitting}
         type="submit"
       >
@@ -242,7 +241,7 @@ export function LeadForm({ mode, initialProduct = '', initialService = '' }: Lea
         ) : (
           <>
             {mode === 'quote' ? t('forms.sendQuote') : t('forms.sendMessage')}{' '}
-            <ArrowUpRight aria-hidden="true" size={17} />
+            <ArrowRight aria-hidden="true" size={17} />
           </>
         )}
       </button>

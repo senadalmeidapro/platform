@@ -2,7 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import App from './App';
-import './shared/i18n';
 
 function renderPath(path: string) {
   return render(
@@ -37,20 +36,12 @@ describe('website routes', () => {
 });
 
 describe('catalogue and contact interactions', () => {
-  it('switches between French and English while keeping French as the initial language', async () => {
+  it('is French only: no language selector is rendered', async () => {
     renderPath('/');
     expect(
       await screen.findByRole('heading', { level: 1, name: /Votre technologie/i }),
     ).toBeInTheDocument();
-    const languageSelector = screen.getByLabelText('Langue');
-    fireEvent.change(languageSelector, { target: { value: 'en' } });
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /Your technology/i }),
-    ).toBeInTheDocument();
-    fireEvent.change(languageSelector, { target: { value: 'fr' } });
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /Votre technologie/i }),
-    ).toBeInTheDocument();
+    expect(screen.queryByLabelText('Langue')).not.toBeInTheDocument();
   });
 
   it('filters products by category and search term', async () => {

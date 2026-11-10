@@ -1,28 +1,16 @@
-import { useTranslation } from 'react-i18next';
+import { t } from '../content';
 
 type SectionHeadingProps = {
   title: string;
   description?: string;
-  kicker?: string;
-  light?: boolean;
   align?: 'left' | 'center';
 };
 
-export function SectionHeading({
-  title,
-  description,
-  kicker,
-  light = false,
-  align = 'left',
-}: SectionHeadingProps) {
-  const { t } = useTranslation();
+export function SectionHeading({ title, description, align = 'left' }: SectionHeadingProps) {
   return (
-    <div
-      className={`section-heading section-heading--${align} ${light ? 'section-heading--light' : ''}`}
-    >
-      {kicker && <p className="section-heading__kicker">{t(kicker)}</p>}
+    <div className={`section-head__copy ${align === 'center' ? 'section-head__copy--center' : ''}`}>
       <h2>{t(title)}</h2>
-      {description && <p className="section-heading__description">{t(description)}</p>}
+      {description && <p>{t(description)}</p>}
     </div>
   );
 }

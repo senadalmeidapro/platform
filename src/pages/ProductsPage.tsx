@@ -1,60 +1,52 @@
 import { useMemo, useState } from 'react';
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { Info, Search } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import { productCategories, products } from '../data/catalog';
 import { CTASection } from '../components/CTASection';
 import { ProductCard } from '../components/ContentSections';
+import { PageHeader } from '../components/PageHeader';
 import { PageMeta } from '../components/PageMeta';
+import { t } from '../content';
+import { productCategories, products } from '../data/catalog';
 
 export function ProductsPage() {
-  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState('');
   const selectedCategory = searchParams.get('category') ?? 'all';
-  const filteredProducts = useMemo(
-    () =>
-      products.filter((product) => {
-        const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-        const searchable =
-          `${t(product.title)} ${t(product.description)} ${t(`products.categories.${product.category}`)}`.toLowerCase();
-        return matchesCategory && searchable.includes(query.trim().toLowerCase());
-      }),
-    [query, selectedCategory, t],
-  );
+
+  const filteredProducts = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return products.filter((product) => {
+      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+      const searchable =
+        `${t(product.title)} ${t(product.description)} ${t(`products.categories.${product.category}`)}`.toLowerCase();
+      return matchesCategory && searchable.includes(needle);
+    });
+  }, [query, selectedCategory]);
+
+  const reset = () => {
+    setSearchParams({});
+    setQuery('');
+  };
 
   return (
     <>
       <PageMeta description="meta.products.description" title="meta.products.title" />
-      <section className="page-masthead page-masthead--products">
+      <PageHeader
+        description={t('products.description')}
+        title={t('products.title')}
+        trail={[{ label: 'nav.products' }]}
+      />
+
+      <section className="section">
         <div className="container">
-          <div className="page-masthead__copy">
-            <p className="eyebrow">{t('products.kicker')}</p>
-            <h1>{t('products.title')}</h1>
-            <p>{t('products.description')}</p>
-          </div>
-        </div>
-      </section>
-      <section className="section catalogue-section">
-        <div className="container">
-          <div className="catalogue-notice">
-            <span className="catalogue-notice__icon">
-              <SlidersHorizontal size={19} />
-            </span>
-            <p>{t('products.demoNote')}</p>
-            <Link to="/request-quote">
-              {t('products.askForEquipment')}
-              <span>↗</span>
-            </Link>
-          </div>
-          <div className="catalogue-controls">
+          <div className="toolbar">
             <div
               aria-label={t('products.filterByCategory')}
-              className="category-filters"
+              className="chips chips--scroll"
               role="group"
             >
               <button
-                className={selectedCategory === 'all' ? 'is-selected' : ''}
+                className={`chip ${selectedCategory === 'all' ? 'is-selected' : ''}`}
                 onClick={() => setSearchParams({})}
                 type="button"
               >
@@ -62,7 +54,7 @@ export function ProductsPage() {
               </button>
               {productCategories.map((category) => (
                 <button
-                  className={selectedCategory === category ? 'is-selected' : ''}
+                  className={`chip ${selectedCategory === category ? 'is-selected' : ''}`}
                   key={category}
                   onClick={() => setSearchParams({ category })}
                   type="button"
@@ -71,7 +63,7 @@ export function ProductsPage() {
                 </button>
               ))}
             </div>
-            <label className="catalogue-search">
+            <label className="search">
               <Search aria-hidden="true" size={18} />
               <span className="sr-only">{t('products.searchLabel')}</span>
               <input
@@ -82,31 +74,36 @@ export function ProductsPage() {
               />
             </label>
           </div>
+
           {filteredProducts.length ? (
-            <div className="product-grid">
+            <div className="grid grid--3">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
             <div className="empty-state">
-              <Search size={24} />
+              <Search aria-hidden="true" size={26} />
               <h2>{t('products.emptyTitle')}</h2>
               <p>{t('products.emptyDescription')}</p>
-              <button
-                className="text-link-button"
-                onClick={() => {
-                  setSearchParams({});
-                  setQuery('');
-                }}
-                type="button"
-              >
+              <button className="link" onClick={reset} type="button">
                 {t('products.clearFilters')}
               </button>
             </div>
           )}
+
+          <p className="note">
+            <Info aria-hidden="true" size={18} />
+            <span>
+              {t('products.demoNote')}{' '}
+              <Link className="link" to="/request-quote">
+                {t('products.askForEquipment')}
+              </Link>
+            </span>
+          </p>
         </div>
       </section>
+
       <CTASection description="products.cta.description" title="products.cta.title" />
     </>
   );

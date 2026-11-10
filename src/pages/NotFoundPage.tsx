@@ -1,28 +1,26 @@
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import { PageMeta } from '../components/PageMeta';
+import { t } from '../content';
 
 export function NotFoundPage() {
-  const { t } = useTranslation();
   return (
     <>
       <PageMeta description="meta.notFound.description" title="meta.notFound.title" />
       <section className="not-found">
-        <div className="not-found__grid" />
         <div className="container not-found__inner">
-          <span>404</span>
-          <p className="eyebrow">{t('notFound.kicker')}</p>
+          <span aria-hidden="true" className="not-found__code">
+            404
+          </span>
           <h1>{t('notFound.title')}</h1>
-          <p>{t('notFound.description')}</p>
-          <div>
-            <Link className="button button--primary" to="/">
-              <ArrowLeft size={17} />
+          <p className="lead">{t('notFound.description')}</p>
+          <div className="not-found__actions">
+            <Link className="btn btn--primary" to="/">
+              <ArrowLeft aria-hidden="true" size={17} />
               {t('notFound.home')}
             </Link>
-            <Link className="text-link" to="/contact">
+            <Link className="link" to="/contact">
               {t('nav.contact')}
-              <ArrowUpRight size={17} />
             </Link>
           </div>
         </div>

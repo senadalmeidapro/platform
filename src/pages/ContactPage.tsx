@@ -1,96 +1,94 @@
 import { Clock3, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { company } from '../config/company';
 import { LeadForm } from '../components/LeadForm';
+import { PageHeader } from '../components/PageHeader';
 import { PageMeta } from '../components/PageMeta';
+import { company } from '../config/company';
+import { t } from '../content';
+
+function Detail({
+  icon: Icon,
+  label,
+  value,
+  href,
+  fallback,
+}: {
+  icon: typeof Phone;
+  label: string;
+  value: string;
+  href?: string;
+  fallback: string;
+}) {
+  return (
+    <div className="info">
+      <span className="icon-box">
+        <Icon aria-hidden="true" size={20} />
+      </span>
+      <div>
+        <small>{label}</small>
+        {value ? href ? <a href={href}>{value}</a> : <p>{value}</p> : <p>{fallback}</p>}
+      </div>
+    </div>
+  );
+}
 
 export function ContactPage() {
-  const { t } = useTranslation();
   return (
     <>
       <PageMeta description="meta.contact.description" title="meta.contact.title" />
-      <section className="page-masthead page-masthead--contact">
-        <div className="container">
-          <div className="page-masthead__copy">
-            <p className="eyebrow">{t('contact.kicker')}</p>
-            <h1>{t('contact.title')}</h1>
-            <p>{t('contact.description')}</p>
-          </div>
-        </div>
-      </section>
-      <section className="section contact-section" id="contact-details">
-        <div className="container contact-section__layout">
-          <aside className="contact-aside">
-            <p className="eyebrow">{t('contact.detailsKicker')}</p>
+      <PageHeader
+        description={t('contact.description')}
+        title={t('contact.title')}
+        trail={[{ label: 'nav.contact' }]}
+      />
+
+      <section className="section" id="contact-details">
+        <div className="container form-layout">
+          <aside className="aside">
             <h2>{t('contact.detailsTitle')}</h2>
             <p>{t('contact.detailsDescription')}</p>
-            <div className="contact-detail-list">
-              <div className="contact-detail">
-                <span>
-                  <Phone size={19} />
-                </span>
-                <div>
-                  <small>{t('contact.phoneLabel')}</small>
-                  {company.phone ? (
-                    <a href={`tel:${company.phone}`}>{company.phone}</a>
-                  ) : (
-                    <p>{t('contact.detailsAvailable')}</p>
-                  )}
-                </div>
-              </div>
-              <div className="contact-detail">
-                <span>
-                  <Mail size={19} />
-                </span>
-                <div>
-                  <small>{t('contact.emailLabel')}</small>
-                  {company.email ? (
-                    <a href={`mailto:${company.email}`}>{company.email}</a>
-                  ) : (
-                    <p>{t('contact.detailsAvailable')}</p>
-                  )}
-                </div>
-              </div>
-              <div className="contact-detail">
-                <span>
-                  <MapPin size={19} />
-                </span>
-                <div>
-                  <small>{t('contact.locationLabel')}</small>
-                  <p>{company.address || t('contact.locationAvailable')}</p>
-                </div>
-              </div>
-              <div className="contact-detail">
-                <span>
-                  <Clock3 size={19} />
-                </span>
-                <div>
-                  <small>{t('contact.hoursLabel')}</small>
-                  <p>{company.businessHours || t('contact.hoursAvailable')}</p>
-                </div>
-              </div>
+            <div className="info-list">
+              <Detail
+                fallback={t('contact.detailsAvailable')}
+                href={`tel:${company.phone}`}
+                icon={Phone}
+                label={t('contact.phoneLabel')}
+                value={company.phone}
+              />
+              <Detail
+                fallback={t('contact.detailsAvailable')}
+                href={`mailto:${company.email}`}
+                icon={Mail}
+                label={t('contact.emailLabel')}
+                value={company.email}
+              />
+              <Detail
+                fallback={t('contact.locationAvailable')}
+                icon={MapPin}
+                label={t('contact.locationLabel')}
+                value={company.address}
+              />
+              <Detail
+                fallback={t('contact.hoursAvailable')}
+                icon={Clock3}
+                label={t('contact.hoursLabel')}
+                value={company.businessHours}
+              />
             </div>
             {company.whatsapp && (
               <a
-                className="button button--whatsapp"
+                className="btn btn--secondary"
                 href={`https://wa.me/${company.whatsapp.replace(/\D/g, '')}`}
                 rel="noreferrer"
                 target="_blank"
               >
-                <MessageCircle size={18} />
+                <MessageCircle aria-hidden="true" size={18} />
                 {t('contact.whatsapp')}
               </a>
             )}
-            <div aria-label={t('contact.locationLabel')} className="location-panel" role="img">
-              <div className="location-panel__grid" />
-              <span className="location-panel__pin">
-                <MapPin size={21} />
-              </span>
-              <p>{t('contact.locationMapNote')}</p>
-            </div>
           </aside>
-          <div className="contact-form-panel">
-            <div className="contact-form-panel__heading">
+
+          <div className="panel">
+            <div className="panel__head">
               <h2>{t('contact.formTitle')}</h2>
               <p>{t('contact.formDescription')}</p>
             </div>

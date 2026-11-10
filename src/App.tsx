@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Route, Routes, useLocation } from 'react-router';
 import { SiteLayout } from './components/SiteChrome';
 const HomePage = lazy(() =>
@@ -36,14 +35,6 @@ const TermsPage = lazy(() =>
   import('./pages/LegalPages').then((module) => ({ default: module.TermsPage })),
 );
 
-function LanguageDocumentSync() {
-  const { i18n } = useTranslation();
-  useEffect(() => {
-    document.documentElement.lang = (i18n.resolvedLanguage ?? i18n.language).split('-')[0] ?? 'fr';
-  }, [i18n, i18n.language, i18n.resolvedLanguage]);
-  return null;
-}
-
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
@@ -56,9 +47,10 @@ function ScrollToTop() {
 export default function App() {
   return (
     <>
-      <LanguageDocumentSync />
       <ScrollToTop />
-      <Suspense fallback={<div aria-label="Loading page" className="page-loading" role="status" />}>
+      <Suspense
+        fallback={<div aria-label="Chargement de la page" className="page-loading" role="status" />}
+      >
         <Routes>
           <Route element={<SiteLayout />}>
             <Route index element={<HomePage />} />

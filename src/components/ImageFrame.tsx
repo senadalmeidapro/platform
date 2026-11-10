@@ -5,25 +5,18 @@ type ImageFrameProps = {
   src: string;
   alt: string;
   className?: string;
-  imageClassName?: string;
   priority?: boolean;
 };
 
-export function ImageFrame({
-  src,
-  alt,
-  className = '',
-  imageClassName = '',
-  priority = false,
-}: ImageFrameProps) {
+export function ImageFrame({ src, alt, className = '', priority = false }: ImageFrameProps) {
   const [failed, setFailed] = useState(false);
 
   return (
-    <div className={`image-frame ${className}`}>
+    <div className={`frame ${className}`}>
       {!failed ? (
         <img
           alt={alt}
-          className={`image-frame__image ${imageClassName}`}
+          className="frame__img"
           decoding="async"
           fetchPriority={priority ? 'high' : 'auto'}
           loading={priority ? 'eager' : 'lazy'}
@@ -31,7 +24,7 @@ export function ImageFrame({
           src={src}
         />
       ) : (
-        <div aria-label={alt} className="image-frame__fallback" role="img">
+        <div aria-label={alt} className="frame__fallback" role="img">
           <ImageOff aria-hidden="true" size={32} strokeWidth={1.4} />
         </div>
       )}
