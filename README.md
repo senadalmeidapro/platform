@@ -35,6 +35,21 @@ npm.cmd run test:run
 npm.cmd run build
 ```
 
+## Deploy to Vercel
+
+This repository is configured as a Vite single-page application. Import the repository into Vercel with the project root set to this directory. The included `vercel.json` configures `npm ci`, the production build, the `dist` output directory, SPA route fallback, security headers, and long-lived caching for hashed assets.
+
+Before deploying, add the production environment variables in **Vercel → Project Settings → Environment Variables** and apply them to Production and Preview as needed:
+
+| Variable | Value |
+| --- | --- |
+| `VITE_API_BASE_URL` | The deployed API base URL, including its version prefix (for example, `https://api.your-domain.example/api/v1`). |
+| `VITE_LEADS_API_URL` | The deployed API endpoint that accepts lead submissions. Leave unset until that endpoint is deployed and verified. |
+
+These values are embedded into the frontend at build time. Redeploy after changing them. The Vite development proxy at `/api` only works locally; Vercel does not run the NestJS API from this frontend project. Configure the API’s allowed CORS origins to include the deployed production and preview frontend domains before connecting forms or API calls.
+
+The site can be deployed before the API is available, but lead forms will show their existing unavailable state and will not claim that a request was sent. Verify the production domain, service and product routes, deep-link refreshes, contact links, and form behavior after the first deployment.
+
 ## Project references
 
 - [Frontend documentation](docs/README.md)

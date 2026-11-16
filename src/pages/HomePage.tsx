@@ -1,15 +1,70 @@
-import { ArrowRight, BadgeCheck, BriefcaseBusiness, ShieldCheck } from 'lucide-react';
+import {
+  ArrowRight,
+  Armchair,
+  Building2,
+  Cctv,
+  Cpu,
+  GraduationCap,
+  House,
+  Briefcase,
+  Landmark,
+  Laptop,
+  Monitor,
+  Mouse,
+  Paperclip,
+  Printer,
+  Router,
+  ShieldCheck,
+  Store,
+  BadgeCheck,
+  BriefcaseBusiness,
+  ClipboardCheck,
+  PackageCheck,
+  Cable,
+  Headset,
+} from 'lucide-react';
+import type { ComponentType } from 'react';
 import { Link } from 'react-router';
+import { ConsoleIllustration } from '../components/ConsoleIllustration';
 import { CTASection } from '../components/CTASection';
 import { ServiceCard } from '../components/ContentSections';
-import { ImageFrame } from '../components/ImageFrame';
 import { PageMeta } from '../components/PageMeta';
 import { SectionHeading } from '../components/SectionHeading';
 import { ServiceIcon } from '../components/ServiceIcon';
 import { t } from '../content';
-import { industries, productCategories, services, workSteps } from '../data/catalog';
+import { industries, productCategories, services, workSteps, type Service } from '../data/catalog';
 
-const strengths = [
+type Icon = ComponentType<{ 'size'?: number; 'aria-hidden'?: boolean }>;
+
+const trust: Array<{ icon: Icon }> = [
+  { icon: ClipboardCheck },
+  { icon: PackageCheck },
+  { icon: Cable },
+  { icon: Headset },
+];
+
+const industryIcons: Record<(typeof industries)[number], Icon> = {
+  smallBusiness: Briefcase,
+  offices: Building2,
+  education: GraduationCap,
+  retail: Store,
+  organizations: Landmark,
+  individuals: House,
+};
+
+const categoryIcons: Record<(typeof productCategories)[number], Icon> = {
+  computers: Laptop,
+  components: Cpu,
+  displays: Monitor,
+  printing: Printer,
+  networking: Router,
+  security: Cctv,
+  accessories: Mouse,
+  officeEquipment: Armchair,
+  officeSupplies: Paperclip,
+};
+
+const strengths: Array<{ icon: Icon; title: string; body: string }> = [
   {
     icon: BadgeCheck,
     title: 'home.intro.strengths.expertise',
@@ -27,14 +82,32 @@ const strengths = [
   },
 ];
 
-const capabilityGroups = ['systems', 'networking', 'security', 'office'] as const;
+const bentoSpan: Record<Service['id'], string> = {
+  computerMaintenance: 'b-7',
+  itSupport: 'b-5',
+  networkInstallation: 'b-4',
+  videoSurveillance: 'b-4',
+  equipmentInstallation: 'b-4',
+  equipmentSales: 'b-12',
+};
+
+const byId = (id: Service['id']) => services.find((service) => service.id === id)!;
+const bentoOrder: Service['id'][] = [
+  'computerMaintenance',
+  'itSupport',
+  'networkInstallation',
+  'videoSurveillance',
+  'equipmentInstallation',
+];
 
 export function HomePage() {
+  const sales = byId('equipmentSales');
+
   return (
     <>
       <PageMeta title="meta.home.title" description="meta.home.description" />
 
-      <section className="hero">
+      <section className="hero grid-bg on-dark">
         <div className="container hero__layout">
           <div className="hero__copy">
             <span className="badge">
@@ -56,27 +129,27 @@ export function HomePage() {
               {t('home.hero.promise')}
             </p>
           </div>
-          <div className="hero__visual">
-            <ImageFrame
-              alt={t('home.hero.imageAlt')}
-              className="hero__frame"
-              priority
-              src={services[0]!.image}
-            />
-            <aside aria-label={t('home.hero.panelTitle')} className="hero__panel">
-              <p className="hero__panel-title">{t('home.hero.panelTitle')}</p>
-              {[services[2]!, services[3]!, services[4]!].map((service) => (
-                <div className="hero__panel-row" key={service.id}>
-                  <span className="icon-box">
-                    <ServiceIcon name={service.icon} />
-                  </span>
-                  {t(`services.items.${service.id}.title`)}
-                </div>
-              ))}
-            </aside>
-          </div>
+          <ConsoleIllustration />
         </div>
       </section>
+
+      <div className="trust-wrap">
+        <div className="container">
+          <div className="trust">
+            {trust.map(({ icon: Icon }, index) => (
+              <div className="trust__item" key={index}>
+                <span className="icon-box">
+                  <Icon aria-hidden size={20} />
+                </span>
+                <div>
+                  <h3>{t(`home.trust.${index}.title`)}</h3>
+                  <p>{t(`home.trust.${index}.body`)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       <section className="section">
         <div className="container">
@@ -86,80 +159,50 @@ export function HomePage() {
               {t('home.services.link')} <ArrowRight aria-hidden="true" size={16} />
             </Link>
           </div>
-          <div className="grid grid--3">
-            {services.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--soft">
-        <div className="container split">
-          <ImageFrame
-            alt={t('home.intro.imageAlt')}
-            className="detail-hero__frame"
-            src={services[2]!.image}
-          />
-          <div className="split__copy">
-            <h2>{t('home.intro.title')}</h2>
-            <p>{t('home.intro.description')}</p>
-            <div className="feature-list">
-              {strengths.map(({ icon: Icon, title, body }) => (
-                <div className="feature" key={title}>
-                  <span className="icon-box">
-                    <Icon aria-hidden="true" size={20} />
-                  </span>
-                  <div>
-                    <h3>{t(title)}</h3>
-                    <p>{t(body)}</p>
-                  </div>
+          <div className="bento">
+            {bentoOrder.map((id) => {
+              const service = byId(id);
+              return (
+                <div className={bentoSpan[id]} key={id} style={{ display: 'grid' }}>
+                  <ServiceCard
+                    service={service}
+                    size={bentoSpan[id] === 'b-4' ? 'default' : 'large'}
+                  />
                 </div>
-              ))}
-            </div>
-            <Link className="link" to="/about">
-              {t('home.intro.link')} <ArrowRight aria-hidden="true" size={16} />
-            </Link>
+              );
+            })}
+            <article className="card service-card service-card--wide b-12">
+              <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
+                <span className="icon-box">
+                  <ServiceIcon name={sales.icon} />
+                </span>
+                <h3>{t(`services.items.${sales.id}.title`)}</h3>
+                <p>{t(`services.items.${sales.id}.short`)}</p>
+                <Link className="link" to={`/services/${sales.slug}`}>
+                  {t('common.learnMore')} <ArrowRight aria-hidden="true" size={16} />
+                </Link>
+              </div>
+              <div className="chips">
+                {productCategories.map((category) => (
+                  <span className="chip" key={category}>
+                    {t(`products.categories.${category}`)}
+                  </span>
+                ))}
+              </div>
+            </article>
           </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <div className="section-head section-head--center">
-            <SectionHeading
-              align="center"
-              title="home.capabilities.title"
-              description="home.capabilities.description"
-            />
-          </div>
-          <div className="grid grid--4">
-            {capabilityGroups.map((group) => (
-              <article className="card capability" key={group}>
-                <h3>{t(`home.capabilities.groups.${group}.title`)}</h3>
-                <p>{t(`home.capabilities.groups.${group}.description`)}</p>
-                <ul className="check-list">
-                  {[0, 1, 2, 3].map((item) => (
-                    <li key={item}>
-                      <span aria-hidden="true">·</span>
-                      {t(`home.capabilities.groups.${group}.items.${item}`)}
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--soft">
+      <section className="section section--dark on-dark">
         <div className="container">
           <div className="section-head">
             <SectionHeading title="home.process.title" description="home.process.description" />
           </div>
-          <ol className="steps" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-            {workSteps.map((step) => (
-              <li className="card step" key={step}>
+          <ol className="timeline">
+            {workSteps.map((step, index) => (
+              <li className="t-step" key={step}>
+                <span className="t-step__num">0{index + 1}</span>
                 <h3>{t(`home.process.steps.${step}.title`)}</h3>
                 <p>{t(`home.process.steps.${step}.description`)}</p>
               </li>
@@ -171,36 +214,76 @@ export function HomePage() {
       <section className="section">
         <div className="container">
           <div className="section-head">
+            <SectionHeading
+              title="home.industries.title"
+              description="home.industries.description"
+            />
+            <Link className="link" to="/contact">
+              {t('home.industries.link')} <ArrowRight aria-hidden="true" size={16} />
+            </Link>
+          </div>
+          <div className="grid grid--3">
+            {industries.map((industry) => {
+              const Icon = industryIcons[industry];
+              return (
+                <div className="card audience" key={industry}>
+                  <span className="icon-box">
+                    <Icon aria-hidden size={20} />
+                  </span>
+                  <strong>{t(`home.industries.items.${industry}`)}</strong>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--soft">
+        <div className="container">
+          <div className="section-head">
             <SectionHeading title="home.products.title" description="home.products.description" />
             <Link className="link" to="/products">
               {t('home.products.link')} <ArrowRight aria-hidden="true" size={16} />
             </Link>
           </div>
-          <div className="chips">
-            {productCategories.map((category) => (
-              <Link className="chip" key={category} to={`/products?category=${category}`}>
-                {t(`products.categories.${category}`)}
-              </Link>
-            ))}
+          <div className="grid grid--3">
+            {productCategories.map((category) => {
+              const Icon = categoryIcons[category];
+              return (
+                <Link className="tile-link" key={category} to={`/products?category=${category}`}>
+                  <span className="icon-box">
+                    <Icon aria-hidden size={20} />
+                  </span>
+                  {t(`products.categories.${category}`)}
+                  <ArrowRight aria-hidden="true" size={16} />
+                </Link>
+              );
+            })}
           </div>
           <p className="note">{t('products.demoNote')}</p>
         </div>
       </section>
 
-      <section className="section section--soft">
+      <section className="section">
         <div className="container split split--top">
           <div className="split__copy">
-            <h2>{t('home.industries.title')}</h2>
-            <p>{t('home.industries.description')}</p>
-            <div className="chips">
-              {industries.map((industry) => (
-                <span className="chip chip--static" key={industry}>
-                  {t(`home.industries.items.${industry}`)}
-                </span>
+            <h2>{t('home.intro.title')}</h2>
+            <p>{t('home.intro.description')}</p>
+            <div className="feature-list">
+              {strengths.map(({ icon: Icon, title, body }) => (
+                <div className="feature" key={title}>
+                  <span className="icon-box">
+                    <Icon aria-hidden size={20} />
+                  </span>
+                  <div>
+                    <h3>{t(title)}</h3>
+                    <p>{t(body)}</p>
+                  </div>
+                </div>
               ))}
             </div>
-            <Link className="link" to="/contact">
-              {t('home.industries.link')} <ArrowRight aria-hidden="true" size={16} />
+            <Link className="link" to="/about">
+              {t('home.intro.link')} <ArrowRight aria-hidden="true" size={16} />
             </Link>
           </div>
           <figure className="card quote">

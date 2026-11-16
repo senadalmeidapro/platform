@@ -10,8 +10,31 @@ const AboutPage = lazy(() =>
 const ServicesPage = lazy(() =>
   import('./pages/ServicesPage').then((module) => ({ default: module.ServicesPage })),
 );
-const ServiceDetailPage = lazy(() =>
-  import('./pages/ServiceDetailPage').then((module) => ({ default: module.ServiceDetailPage })),
+const ComputerMaintenancePage = lazy(() =>
+  import('./pages/services/ComputerMaintenancePage').then((m) => ({
+    default: m.ComputerMaintenancePage,
+  })),
+);
+const EquipmentInstallationPage = lazy(() =>
+  import('./pages/services/EquipmentInstallationPage').then((m) => ({
+    default: m.EquipmentInstallationPage,
+  })),
+);
+const NetworkInstallationPage = lazy(() =>
+  import('./pages/services/NetworkInstallationPage').then((m) => ({
+    default: m.NetworkInstallationPage,
+  })),
+);
+const VideoSurveillancePage = lazy(() =>
+  import('./pages/services/VideoSurveillancePage').then((m) => ({
+    default: m.VideoSurveillancePage,
+  })),
+);
+const ITSupportPage = lazy(() =>
+  import('./pages/services/ITSupportPage').then((m) => ({ default: m.ITSupportPage })),
+);
+const EquipmentSalesPage = lazy(() =>
+  import('./pages/services/EquipmentSalesPage').then((m) => ({ default: m.EquipmentSalesPage })),
 );
 const ProductsPage = lazy(() =>
   import('./pages/ProductsPage').then((module) => ({ default: module.ProductsPage })),
@@ -56,7 +79,12 @@ export default function App() {
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="services" element={<ServicesPage />} />
-            <Route path="services/:slug" element={<ServiceDetailPage />} />
+            <Route path="services/computer-maintenance" element={<ComputerMaintenancePage />} />
+            <Route path="services/equipment-installation" element={<EquipmentInstallationPage />} />
+            <Route path="services/network-installation" element={<NetworkInstallationPage />} />
+            <Route path="services/video-surveillance" element={<VideoSurveillancePage />} />
+            <Route path="services/it-support" element={<ITSupportPage />} />
+            <Route path="services/it-equipment-sales" element={<EquipmentSalesPage />} />
             <Route path="products" element={<ProductsPage />} />
             <Route path="contact" element={<ContactPage />} />
             <Route path="request-quote" element={<QuotePage />} />

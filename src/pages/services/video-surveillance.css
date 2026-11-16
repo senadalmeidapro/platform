@@ -1,0 +1,303 @@
+/* Vidéosurveillance — identité « salle de contrôle » : corail, mur de caméras, plan interactif, calculateur */
+.cctv-wall {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xl);
+  background: #080d15;
+  box-shadow: 0 50px 90px -34px rgb(0 0 0 / 85%);
+  overflow: hidden;
+}
+.cctv-wall__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+.cctv-wall__bar .console__tag {
+  margin-left: auto;
+  padding: 2px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+}
+.cctv-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.cctv-rec::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: cctv-blink 1.4s steps(2, jump-none) infinite;
+}
+@keyframes cctv-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+.cctv-wall__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 6px;
+}
+.cctv-cam {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 3.5%) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, #1b2840, #0c1423);
+  overflow: hidden;
+}
+.cctv-cam::before {
+  content: '';
+  position: absolute;
+  inset: 22% 18%;
+  border: 1px solid rgb(255 255 255 / 6%);
+  border-radius: 4px;
+}
+.cctv-cam__label,
+.cctv-cam__time {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 0.5625rem;
+  color: #d3deef;
+}
+.cctv-cam__label {
+  left: 6px;
+  top: 6px;
+}
+.cctv-cam__time {
+  right: 6px;
+  bottom: 5px;
+  color: #8fa2c0;
+}
+.cctv-wall__foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+.cctv-plan {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 24px;
+  align-items: start;
+}
+.cctv-plan__map {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border: 1px solid var(--night-950);
+  border-radius: var(--r-xl);
+  background: var(--night-950);
+  overflow: hidden;
+}
+.cctv-plan__map svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.plan-outside {
+  fill: none;
+  stroke: #22314a;
+  stroke-dasharray: 4 6;
+}
+.plan-room {
+  fill: #0e1829;
+  stroke: #3a5078;
+  stroke-width: 2;
+}
+.plan-room--stock {
+  fill: #101c30;
+}
+.plan-furniture {
+  fill: #1a2a45;
+  stroke: #2d4268;
+}
+.plan-door {
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.plan-text {
+  fill: #6f83a3;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.cctv-spot {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  background: #0b121c;
+  color: var(--accent);
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    background-color 0.15s;
+}
+.cctv-spot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+}
+.cctv-spot:hover {
+  transform: scale(1.08);
+}
+.cctv-spot[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.cctv-spot[aria-pressed='true']::after {
+  animation: cctv-pulse 1.6s ease-out infinite;
+}
+@keyframes cctv-pulse {
+  from {
+    opacity: 0.8;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.cctv-zone {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+}
+.cctv-zone__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cctv-zone__tabs button {
+  padding: 6px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cctv-zone__tabs button[aria-pressed='true'] {
+  border-color: var(--accent-strong);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.cctv-zone h3 {
+  font-size: 1.4rem;
+}
+.cctv-zone dl {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+.cctv-zone dt {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+.cctv-zone dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+.cctv-calc {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 24px;
+  align-items: stretch;
+}
+.cctv-calc__form {
+  display: grid;
+  gap: 22px;
+  padding: 28px;
+}
+.cctv-calc input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent-strong);
+}
+.cctv-calc__result {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 32px;
+  border-radius: var(--r-xl);
+  background: var(--night-950);
+}
+.cctv-calc__label {
+  color: #7d8ca3;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+.cctv-calc__value {
+  margin-bottom: 18px;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+.cctv-calc__value--accent {
+  color: var(--accent);
+}
+.cctv-calc__note {
+  padding-top: 16px;
+  border-top: 1px solid #1f2c40;
+  color: #8d9cb3;
+  font-size: 0.8125rem;
+}
+
+.cctv-usage {
+  color: var(--ink) !important;
+  font-weight: 600;
+}
+.cctv-privacy {
+  margin-top: 28px;
+}
+
+@media (max-width: 960px) {
+  .cctv-plan,
+  .cctv-calc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 680px) {
+  .cctv-wall__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cctv-spot {
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+  }
+}

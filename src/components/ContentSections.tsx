@@ -5,15 +5,28 @@ import type { Product, Service } from '../data/catalog';
 import { ImageFrame } from './ImageFrame';
 import { ServiceIcon } from './ServiceIcon';
 
-export function ServiceCard({ service }: { service: Service }) {
+export function ServiceCard({
+  service,
+  size = 'default',
+}: {
+  service: Service;
+  size?: 'default' | 'large';
+}) {
   const title = t(`services.items.${service.id}.title`);
   return (
-    <article className="card service-card">
-      <span className="icon-box">
-        <ServiceIcon name={service.icon} />
-      </span>
+    <article className={`card service-card ${size === 'large' ? 'service-card--lg' : ''}`}>
+      <div className="service-card__top">
+        <span className="icon-box">
+          <ServiceIcon name={service.icon} />
+        </span>
+      </div>
       <h3>{title}</h3>
       <p>{t(`services.items.${service.id}.short`)}</p>
+      <ul className="mini-list">
+        {service.scopes.slice(0, 3).map((scope) => (
+          <li key={scope}>{t(scope)}</li>
+        ))}
+      </ul>
       <Link
         aria-label={`${t('common.learnMore')} : ${title}`}
         className="link"
@@ -25,16 +38,23 @@ export function ServiceCard({ service }: { service: Service }) {
   );
 }
 
-export function FaqList({ items }: { items: Array<{ question: string; answer: string }> }) {
+export function FaqList({
+  items,
+  literal = false,
+}: {
+  items: Array<{ question: string; answer: string }>;
+  literal?: boolean;
+}) {
+  const text = (value: string) => (literal ? value : t(value));
   return (
     <div className="faq">
       {items.map((item, index) => (
         <details className="faq__item" key={item.question} open={index === 0}>
           <summary>
-            {t(item.question)}
+            {text(item.question)}
             <ChevronDown aria-hidden="true" size={20} />
           </summary>
-          <p>{t(item.answer)}</p>
+          <p>{text(item.answer)}</p>
         </details>
       ))}
     </div>
@@ -65,7 +85,7 @@ export function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export function CheckList({ items }: { items: string[] }) {
+export function CheckList({ items, literal = false }: { items: string[]; literal?: boolean }) {
   return (
     <ul className="check-list">
       {items.map((key) => (
@@ -73,7 +93,7 @@ export function CheckList({ items }: { items: string[] }) {
           <span>
             <Check aria-hidden="true" size={13} strokeWidth={3} />
           </span>
-          {t(key)}
+          {literal ? key : t(key)}
         </li>
       ))}
     </ul>

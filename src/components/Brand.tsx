@@ -2,11 +2,18 @@ import { Link } from 'react-router';
 import { company } from '../config/company';
 import { t } from '../content';
 
-export function Brand({ inverse = false }: { inverse?: boolean }) {
+export function Brand({
+  inverse = false,
+  onNavigate,
+}: {
+  inverse?: boolean;
+  onNavigate?: () => void;
+}) {
   return (
     <Link
       aria-label={`${company.name} – ${t('nav.home')}`}
       className={`brand ${inverse ? 'brand--inverse' : ''}`}
+      onClick={onNavigate}
       to="/"
     >
       <span aria-hidden="true" className="brand__mark">

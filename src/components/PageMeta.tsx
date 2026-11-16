@@ -12,10 +12,18 @@ function setMeta(attribute: 'name' | 'property', key: string, content: string) {
   tag.content = content;
 }
 
-export function PageMeta({ title, description }: { title: string; description: string }) {
+export function PageMeta({
+  title,
+  description,
+  literal = false,
+}: {
+  title: string;
+  description: string;
+  literal?: boolean;
+}) {
   useEffect(() => {
-    const pageTitle = `${t(title)} | ${company.name}`;
-    const pageDescription = t(description);
+    const pageTitle = literal ? title : `${t(title)} | ${company.name}`;
+    const pageDescription = literal ? description : t(description);
     const canonicalUrl = `${window.location.origin}${window.location.pathname}`;
 
     document.title = pageTitle;
@@ -32,7 +40,7 @@ export function PageMeta({ title, description }: { title: string; description: s
       document.head.append(canonical);
     }
     canonical.href = canonicalUrl;
-  }, [description, title]);
+  }, [description, literal, title]);
 
   return null;
 }
