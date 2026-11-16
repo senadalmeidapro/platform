@@ -178,6 +178,28 @@ describe('desktop mega menu', () => {
     );
   });
 
+  it('closes the mega menu when a submenu link is followed', async () => {
+    renderPath('/');
+    const servicesTrigger = await screen.findByRole('button', { name: t('nav.services') });
+    fireEvent.click(servicesTrigger);
+
+    const panel = await screen.findByRole('region', { name: t('nav.services') });
+    const serviceLink = panel.querySelector<HTMLAnchorElement>(
+      'a[href="/services/computer-maintenance"]',
+    );
+    if (!serviceLink) throw new Error('Computer maintenance link was not rendered');
+
+    fireEvent.click(serviceLink);
+
+    expect(servicesTrigger).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      await screen.findByRole('heading', { name: /Maintenance et réparation informatique/i }),
+    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.queryByRole('region', { name: t('nav.services') })).not.toBeInTheDocument(),
+    );
+  });
+
   it('previews the hovered service or product and restores the category feature when idle', async () => {
     renderPath('/');
     fireEvent.click(await screen.findByRole('button', { name: t('nav.services') }));

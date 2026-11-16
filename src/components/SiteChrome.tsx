@@ -134,6 +134,11 @@ function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
     setPreviewItemId(null);
     setActive((current) => (current === category ? null : category));
   };
+  const handleNavigate = () => {
+    setPreviewItemId(null);
+    setActive(null);
+    onNavigate();
+  };
 
   return (
     <div className="mega-nav" ref={rootRef}>
@@ -191,7 +196,7 @@ function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
                   <Link
                     className="mega-menu__item"
                     key={item.id}
-                    onClick={onNavigate}
+                    onClick={handleNavigate}
                     onFocus={() => setPreviewItemId(item.id)}
                     onMouseEnter={() => setPreviewItemId(item.id)}
                     to={item.href}
@@ -213,7 +218,7 @@ function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
               </div>
               <Link
                 className="mega-menu__all"
-                onClick={onNavigate}
+                onClick={handleNavigate}
                 to={active === 'products' ? '/products' : '/services'}
               >
                 {active === 'products' ? t('products.title') : t('common.allServices')}
@@ -231,7 +236,7 @@ function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
                 <p className="eyebrow">{featured.eyebrow}</p>
                 <h3>{featured.title}</h3>
                 <p>{featured.description}</p>
-                <Link onClick={onNavigate} to={featured.href}>
+                <Link onClick={handleNavigate} to={featured.href}>
                   {featured.action} <ArrowRight aria-hidden="true" size={16} />
                 </Link>
               </div>
